@@ -1,0 +1,31 @@
+@import "theme.css";
+
+.Navigation nav {
+    height: 70px;
+    background: var(--color-accent);
+}
+
+.Navigation header button {
+    background: transparent;
+}
+
+#dormitories {
+    margin: 15px;
+    width: 160px;
+    color: var(--color-text);
+}
+
+#search {
+    width: 50%;
+    height: 30px;
+    margin: 15px;
+}
+
+#profile {
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-interact);
+    position:absolute;
+    right: 0;
+    margin: 10px;
+}
