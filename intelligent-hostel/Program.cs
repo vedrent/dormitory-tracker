@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Npgsql;
 using System.Security.Claims;
 using System;
+using System.Text.Json;
+using Newtonsoft.Json;
 await Database.init();
 
 var builder = WebApplication.CreateBuilder(/*
@@ -19,63 +21,91 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/login", async (HttpContext context) =>
-{
-    context.Response.ContentType = "text/html; charset=utf-8";
-    // html-форма для ввода логина/пароля
-    string loginForm = @"<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset='utf-8' />
-        <title>METANIT.COM</title>
-    </head>
-    <body>
-        <h2>Login Form</h2>
-        <form method='post'>
-            <p>
-                <label>Email</label><br />
-                <input name='email' />
-            </p>
-            <p>
-                <label>Password</label><br />
-                <input type='password' name='password' />
-            </p>
-            <input type='submit' value='Login' />
-        </form>
-    </body>
-    </html>";
-    await context.Response.WriteAsync(loginForm);
-});
+
 app.MapGet("/getinfo", [Authorize] async (HttpContext context) =>
 {
-    await context.Response.WriteAsync("you`re authorized!");    
+    await context.Response.WriteAsync("Hello, " + context.User.Identity?.Name);    
 });
+app.MapGet("/getroomslist", [Authorize] async (HttpContext context) =>
+{
 
+    string? room_id = context.Request.Query["level"];
+    if (room_id == null)
+    {
+        context.Response.StatusCode = 404;
+        return;
+    }
+    context.Response.Headers.Append("Content-Type", "application/json");
+    var rooms = await Database.getRoomsByLevel(Int32.Parse(room_id));
+    string json = JsonConvert.SerializeObject(rooms); 
+    await context.Response.WriteAsync(json);
+
+});
+app.MapGet("/getstudents_byroom", [Authorize] async (context) =>
+{
+    string? room_id_raw = context.Request.Query["room_id"];
+    if ( room_id_raw == null )
+    {
+        context.Response.StatusCode = 404; return;
+    }
+    int room_id = 0; 
+    if (!Int32.TryParse(room_id_raw, out room_id))
+    {
+        context.Response.StatusCode = 400; return;
+    }
+    Student[] students = await Database.getStudentsByRoom(room_id);
+    context.Response.Headers.Append("Content-Type", "application/json");
+    string jsonAnswer = JsonConvert.SerializeObject(students);
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(jsonAnswer);
+});
+app.MapGet("/getimplements_byroom", [Authorize] async (context) =>
+{
+    string? room_id_raw = context.Request.Query["room_id"];
+    if (room_id_raw == null)
+    {
+        context.Response.StatusCode = 404; return;
+    }
+    int room_id = 0;
+    if (!Int32.TryParse(room_id_raw, out room_id))
+    {
+        context.Response.StatusCode = 400; return;
+    }
+    Implement[] inventory = await Database.getImplementsByRoom(room_id);
+    context.Response.Headers.Append("Content-Type", "application/json");
+    string jsonAnswer = JsonConvert.SerializeObject(inventory);
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(jsonAnswer);
+});
 app.MapPost("/login", async (string? returnUrl, HttpContext context) =>
 {
-    // получаем из формы email и пароль
     var form = context.Request.Form;
-    // если email и/или пароль не установлены, посылаем статусный код ошибки 400
-    if (!form.ContainsKey("email") || !form.ContainsKey("password"))
+    if (!form.ContainsKey("login") || !form.ContainsKey("password"))
         return Results.BadRequest("Email и/или пароль не установлены");
 
-    string email = form["email"];
-    string password = form["password"];
-    if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(password))
+    string? login = form["login"];
+    string? password = form["password"];
+    if (String.IsNullOrWhiteSpace(login) || String.IsNullOrWhiteSpace(password))
         return Results.BadRequest("Email и/или пароль некорректны");
+    
+    var foundUser = await Database.getUserByLogin(login);
+    if (foundUser == null) 
+        return Results.BadRequest();
 
-    if (email != "test@example.lol" || password != "12345678") return Results.Unauthorized();
-    var claims = new List<Claim> { new Claim(ClaimTypes.Name, email) };
+    if (foundUser.password.Replace(" ", "") != Database.CreateSHA256(password).Replace(" ", ""))
+        return Results.Unauthorized();
+
+    var claims = new List<Claim> { new Claim(ClaimTypes.Name, login) };
     // создаем объект ClaimsIdentity
     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
     // установка аутентификационных куки
     await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-    return Results.Redirect(returnUrl ?? "/getinfo");
+    return Results.Ok();
 });
 
 app.MapGet("/logout", async (HttpContext context) =>
 {
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    return Results.Redirect("/login");
+    return Results.Ok();
 });
 app.Run();
