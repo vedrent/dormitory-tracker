@@ -1,0 +1,11 @@
+.Toolbar {
+    background: #FFA559;
+    height: 90vh;
+    width: 200px;
+    padding: 15px;
+}
+
+.Toolbar div {
+    margin-bottom: 15px;
+    font-size: var(--main-font-size);
+}

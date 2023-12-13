@@ -1,6 +1,7 @@
-import './App.css'
+import '../styles/App.css'
 import Navigation from "./Navigation";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Toolbar from "./Toolbar";
 
 function App() {
   return (
@@ -10,6 +11,8 @@ function App() {
                 <Route path="/" element={<Navigation/>}/>
             </Routes>
         </BrowserRouter>
+
+        <Toolbar/>
     </div>
   );
 }

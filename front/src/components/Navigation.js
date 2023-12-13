@@ -1,5 +1,5 @@
-import profile from "./profile.svg";
-import "./Navigation.css";
+import profile from "../profile.svg";
+import "../styles/Navigation.css";
 import React from "react";
 
 import {Link} from "react-router-dom";

@@ -8,3 +8,6 @@ input {
     border: 0;
 }
 
+.App {
+    background: var(--main-bg-color);
+}
