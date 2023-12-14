@@ -65,7 +65,9 @@ public static class Database
 
             rooms.Add(room);
         }
+        await connection.CloseAsync();
         return rooms.ToArray();
+
     }
     public static async Task<Student[]> getStudentsByRoom(int room_id)
     {
@@ -100,7 +102,9 @@ public static class Database
             student.note = (string)reader[13];
             students.Add(student);
         }
+        await connection.CloseAsync();
         return students.ToArray();
+
     }
     public static async Task<Implement[]> getImplementsByRoom(int room_id)
     {
@@ -127,6 +131,7 @@ public static class Database
             imp.internal_id = (int)reader[5];
             implements.Add(imp);
         }
+        await connection.CloseAsync();
         return implements.ToArray();
     }
     public static async Task<User?> getUserByLogin(string login)

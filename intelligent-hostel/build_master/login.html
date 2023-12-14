@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack</title>
+</head>
+<body>
+    
+    <section id="login_form">
+        <header>Вход</header>
+        <div>
+            <label for="login">Логин</label>
+            <input type="text" id="login">
+        </div>
+        <div>
+            <label for="password">Пароль</label>
+            <input type="password" id="password">
+        </div>
+        <button>Войти</button>
+    </section>
+    <style>
+        *{
+            font-size: 18px;
+            font-family: sans-serif;
+            --a: #fff;
+            --b: #ececec;
+            --c: #008688;
+            background-color: var(--b);
+        }
+        html, body
+        {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #login_form{
+            
+            display: flex;
+            flex-direction: column;
+            width: 600px;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--c);
+            border-radius: 5px;
+            padding: 20px;
+        }
+        #login_form div
+        {
+            display: flex;
+            flex-direction: column;
+            width: max-content;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+        #login_form header{
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+        button
+        {
+            background-color: var(--general);
+            cursor: pointer;
+            padding: 7px 20px;
+            border-radius: 10px;
+            background-color: var(--c);
+            color: var(--a);
+            border: none
+        }
+        input
+        {
+            border: 2px solid var(--c);
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+    </style>
+    <script>
+        const logForm = document.querySelector("#login_form");
+        const button = logForm.querySelector("button");
+        const login_input = logForm.querySelector("#login");
+        const password_input = logForm.querySelector("#password");
+
+        button.addEventListener("click", async (event) =>
+        {
+            const data = new FormData();
+            data.set("login", login_input.value)
+            data.set("password", password_input.value)
+            let response = await fetch('/login', {
+                method : "POST",
+                body : data
+            })
+
+            if (response.ok) location.replace("/");
+
+        })
+    </script>
+</body>
+</html>

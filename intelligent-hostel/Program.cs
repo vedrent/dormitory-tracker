@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 await Database.init();
 
 var builder = WebApplication.CreateBuilder(
-    new WebApplicationOptions { WebRootPath = "build"});
+    new WebApplicationOptions { WebRootPath = "build_master"});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => options.LoginPath = "/login");
+    .AddCookie(options => options.LoginPath = "/login.html");
 builder.Services.AddAuthorization();
 builder.Services.AddCors();
 var app = builder.Build();
@@ -26,7 +26,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-
+app.MapGet("/", [Authorize] async (HttpContext context) =>
+{
+    await context.Response.SendFileAsync("./build_master/layers.html");
+});
 app.MapGet("/getinfo", [Authorize] async (HttpContext context) =>
 {
     await context.Response.WriteAsync(context.User?.Identity?.Name + " ok");    
@@ -105,7 +108,7 @@ app.MapPost("/login", async (string? returnUrl, HttpContext context) =>
     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
     // установка аутентификационных куки
     await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-    return Results.Ok();
+    return Results.Redirect("/");
 });
 
 app.MapGet("/logout", async (HttpContext context) =>

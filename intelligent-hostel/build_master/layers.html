@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack</title>
+</head>
+<body>
+    <section id="layers">
+        <label for="layer-choose">Этаж</label>
+        <select id="layer-choose">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+        </select>
+    </section>
+    <div id="popup-info" >
+        <header id="room_number">Комната №___</header>
+        <button onclick="toggle()">Назад</button>
+        <section id="student-info">
+            <header>Жильцы</header>
+            <!-- <div class="student">
+                <div class="photo"></div>
+                <label>ФИО</label>
+                <div class="name">Столяров Даниил Шикхарович</div>
+                <label>Номер договора</label>
+                <div class="idcard">12345354</div>
+
+            </div> -->
+        </section>
+        <section id="inventory-info">
+            <header>Мебель</header>
+            <div class = "implement">
+                <label>Тип мебели</label>
+                <div class="type"></div>
+                <label>Артикул</label>
+                <div class="article"></div>
+            </div>
+        </section>
+
+    </div>
+    <style>
+        *{
+            font-size: 18px;
+            font-family: sans-serif;
+            --a: #fff;
+            --b: #ececec;
+            --c: #008688;
+            background-color: var(--b);
+            
+        }
+        html, body
+        {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #layers
+        {
+            display: block;
+            height: 600px;
+            width: 800px;
+            border: 2px solid var(--c);
+            background: url("/floor_map.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .roomx
+        {
+            font-size: 14px;
+            text-align: center;
+            line-height: 20px;
+            position: absolute;
+            color: #008688;
+            user-select:  none;
+            height: 20px;
+            border-radius: 1px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .roomx:hover
+        {
+            background-color: var(--c);
+            color: var(--a);
+        }
+
+        #popup-info 
+        {
+            display: none;
+            position: absolute;
+            width: 1200px;
+            height: 600px;
+            background-color: var(--b);
+            border-radius: 5px;
+        }
+        #popup-info button
+        {
+            height: fit-content;
+        }
+        #student-info, #inventory-info
+        {
+            width: 50%;
+            border: 3px solid var(--c);
+            height: 100%;
+            
+            overflow-y: scroll;
+        
+        }
+        .student, .implement
+        {
+            margin: 50px 50px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 4px  var(--c);
+            border-style: dashed;
+        }
+        .student *, .implement *
+        {
+            font-size: 14px;
+        }
+        .student div, .implement div
+        {
+            margin-bottom: 20px;
+            background-color: var(--a);
+            padding: 10px;
+        }
+        div.photo
+        {
+            margin: 0 auto;
+            background-image: url("male.png") ;
+            background-color: var(--b);
+            background-size: contain;
+            width: 100px;
+            height: 100px;
+        }
+        #popup-info header
+        {
+            text-align: center;
+            padding-top: 1em;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button
+        {
+            
+            border:none;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 7px 20px;
+            border-radius: 10px;
+         
+            color: var(--c);
+        }
+    </style>
+    <script async>
+        const chooseLayer = document.querySelector("#layer-choose")
+        chooseLayer.addEventListener("change", (event) =>
+        {
+            document.querySelectorAll(".roomx").forEach(roomx => 
+            {
+                roomx.remove();
+            })
+            loadLayer(event.target.value)
+        });
+        loadLayer();
+        async function loadLayer(layer = 1)
+        {
+            
+            const layers_elem = document.querySelector("#layers");
+            const popup_elem = document.querySelector("#popup-info")
+
+            const coef = layers_elem.clientHeight / 900;
+            const response = await fetch(
+                `getroomslist?level=${layer}`,
+            )
+            const body = await response.json()
+            console.log(body)
+            body.forEach(async (room, index) =>
+            {
+                if ([22,23,24, 7, 8, 6].includes(index)) return;
+                const room_element = document.createElement("div");
+                room_element.textContent = room.room_number;
+                room_element.id = "room" + index;
+                room_element.classList.add("roomx")
+                    const res_studentsofroom = await fetch(`/getstudents_byroom?room_id=${room.room_id}`)
+                    const body_studentsofroom = await res_studentsofroom.json();
+                    if (body_studentsofroom.length == 0)
+                        room_element.style.color = "red";
+                    else
+                        console.log(body_studentsofroom)
+                layers_elem.append(room_element);
+                
+                room_element.style.left = room.image_x * coef - room_element.clientWidth / 2 + "px";
+                room_element.style.top = room.image_y * coef - room_element.clientHeight / 2 + "px";
+                room_element.addEventListener("click", async (event) =>
+                {
+                    const room_title = document.querySelector("#room_number");
+
+                    const student_block = document.querySelector("#student-info");
+                    const inventory_block = document.querySelector("#inventory-info");
+                    student_block.innerHTML = "";
+                    inventory_block.innerHTML = "";
+                    const header_students = document.createElement("header");
+                        header_students.textContent = "Жильцы";
+                    const header_inventory = document.createElement("header");
+                        header_inventory.textContent = "Мебель"
+                    student_block.append(header_students)
+                    inventory_block.append(header_inventory)
+                    const res = await fetch(`/getstudents_byroom?room_id=${room.room_id}`)
+                    const body = await res.json();
+                    layers_elem.style.display = "none";
+                    popup_elem.style.display = "flex";
+                    body.forEach(student=>
+                    {
+                        console.log(student)
+                        const student_e = document.createElement("div");
+                            student_e.classList.add("student");
+                        const photo = document.createElement("div");
+                            photo.classList.add("photo");
+                        const FIO_label = document.createElement("label");
+                            FIO_label.textContent = "ФИО";
+                        const FIO = document.createElement("div");
+                            FIO.classList.add("name");
+                            FIO.textContent = student.name + " " + student.surname + " " + student.lastname;
+                        const idcard_label = document.createElement("label");
+                            idcard_label.textContent = "Номер договора";
+                        const idcard = document.createElement("div");
+                            idcard.classList.add("idcard");
+                            idcard.textContent = student.enrollment_order;
+                        
+                        student_e.append(photo, FIO_label, FIO, idcard_label, idcard)
+                        document.querySelector("#student-info").append(student_e)
+                    })
+                    const res_inv = await fetch(`/getimplements_byroom?room_id=${room.room_id}`)
+                    const implements = await res_inv.json();
+                    implements.forEach(imp =>
+                    {
+                        console.log(imp)
+                        const imp_e = document.createElement("div");
+                            imp_e.classList.add("implement");
+                        
+                        const type_label = document.createElement("label");
+                            type_label.textContent = "Тип мебели";
+                        const type = document.createElement("div");
+                            type.classList.add("type");
+                            type.textContent = imp.implement_type;
+
+                        const article_label = document.createElement("label");
+                            article_label.textContent = "Артикул";
+
+                        const article = document.createElement("div");
+                            article.classList.add("article");
+                            article.textContent = imp.internal_id;
+
+                        
+                        imp_e.append(type_label, type, article_label, article)
+                        document.querySelector("#inventory-info").append(imp_e)
+                    })
+                })
+            });
+
+        }
+
+        function toggle()
+            {
+                const layers_elem = document.querySelector("#layers");
+                const popup_elem = document.querySelector("#popup-info")
+                layers_elem.style.display = "block";
+                popup_elem.style.display = "none";
+            }
+    </script>
+</body>
+</html>

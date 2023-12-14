@@ -80,12 +80,7 @@
             border-radius: 5px;
             padding: 5px;
         }
-        input:focus
-        {
-
-        }
-        header{
-        }
+        
     </style>
     <script>
         const logForm = document.querySelector("#login_form");
@@ -98,12 +93,13 @@
             const data = new FormData();
             data.set("login", login_input.value)
             data.set("password", password_input.value)
-            let response = await fetch('http://185.251.88.185:8080/login', {
+            let response = await fetch('/login', {
                 method : "POST",
                 body : data
             })
 
-            console.log(response);
+            if (response.ok) location.replace("/");
+
         })
     </script>
 </body>
