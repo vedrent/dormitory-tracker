@@ -6,12 +6,13 @@ sudo docker run -d --name postgresCont --mount source=app_volume,target=/db -p 5
 sudo docker run -d --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 
 Настроить базу данных:
-sudo docker exec -it postgresCont bash
+sudo docker exec -it postgresCont bash 
 psql -h localhost -U postgres
 create database dormitory_db;
 quit
 exit
 
+sudo docker exec -it postgresCont psql -h localhost -U postgres -c 'create database dormitory_db;'
 развернуть: 
 sudo docker run -d --network=host --name=app --mount source=app_volume,target=/app danst79/intelligenthostel:latest
 sudo docker run --network=host --name=app danst79/intelligenthostel:latest

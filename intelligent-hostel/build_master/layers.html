@@ -55,9 +55,9 @@
             overflow: hidden;
             font-size: 18px;
             font-family: sans-serif;
-            --a: #fff;
-            --b: #ececec;
-            --c: #008688;
+            --a: #ebf4fb;
+            --b: #ffffff;
+            --c: rgb(51, 188, 190);
             background-color: var(--b);
             box-sizing: border-box;
         }
@@ -74,6 +74,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            background-color: var(--a);
         }
 
         #layers
@@ -81,13 +82,13 @@
             display: block;
             height: 600px;
             width: 800px;
-            border: 2px solid var(--c);
+            padding: 50px;
             background: url("/floor_map.png");
             background-size: contain;
             background-repeat: no-repeat;
             position: relative;
             transform:perspective(30cm) rotateX(60deg) rotateZ(-30deg) ;
-
+            background-color: var(--b);
             transition: 1.0s ease;
             transition-delay:0.1s;
         }
@@ -122,7 +123,7 @@
             position: absolute;
             width: 1200px;
             height: 600px;
-            background-color: var(--b);
+            background-color: var(--a);
             border-radius: 5px;
         }
         #popup-info button
@@ -174,7 +175,7 @@
         }
         button
         {
-            
+            background-color: var(--a);
             border:none;
             font-weight: 600;
             cursor: pointer;
@@ -182,6 +183,16 @@
             border-radius: 10px;
          
             color: var(--c);
+        }
+        label[for="layer-choose"],
+        #layer-choose
+        {
+            font-size: 24px;
+            
+        }
+        #room_number
+        {
+            background-color: var(--a);
         }
     </style>
     <script async>
