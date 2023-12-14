@@ -1,0 +1,26 @@
+.Authorization section {
+    display: flex;
+}
+.Authorization form {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.Authorization input {
+    height: 40px;
+    width: 250px;
+}
+
+.Authorization input[type=submit] {
+    border: 0;
+    background: var(--color-interact);
+    padding: 10px;
+    width: 150px;
+}
+
+.Authorization input[type=submit]:hover {
+    border: 0;
+    background: var(--color-accent);
+    padding: 10px;
+}
+
