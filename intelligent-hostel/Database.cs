@@ -1,4 +1,6 @@
-﻿using Npgsql;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
+using Npgsql;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,6 +13,7 @@ public static class Database
     private static NpgsqlDataSource dataSource;
     public static async Task init()
     {
+        
         /*connect();
         dropAllTables().Wait();
         Task.WaitAll(
@@ -313,6 +316,8 @@ public static class Database
     private static async Task fillWithTestData()
     {
         string[] inventory_types = { "кровать", "стол", "стул", "тумбочка", "полка", "шкаф" };
+        RoomExternalData[] roomExternalData = loadFloorCoords();
+        loadFloorCoords();
         string hashTest = CreateSHA256("12345678");
         await using var command = dataSource.CreateCommand(
         @$"insert into users(login, password, username, email, phone)
@@ -331,7 +336,7 @@ public static class Database
         int currentStudent = 0;
         for (int i = 1; i <= 14; i++)
         {
-            for (int r = 1; r < 40; r++)
+            for (int r = 1; r < 32; r++)
             {
                 var connection = dataSource.CreateConnection();
                 await connection.OpenAsync();
@@ -346,8 +351,8 @@ public static class Database
                         new() {Value = i},
                         new() {Value = Random.Shared.Next(0, 3)},
                         new() {Value = beds_number },
-                        new() {Value = -1},
-                        new() {Value = -1}
+                        new() {Value = roomExternalData.Where(d => d.room == r).First().x},
+                        new() {Value = roomExternalData.Where(d => d.room == r).First().y}
                     }
                 };
                 
@@ -439,4 +444,11 @@ public static class Database
         using SHA256 hash = SHA256.Create();
         return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(input)));
     }
+    private static RoomExternalData[] loadFloorCoords()
+    {
+        string raw_data = File.ReadAllText("./floor_coords.json");
+        RoomExternalData[] data = JsonConvert.DeserializeObject<RoomExternalData[]>(raw_data);
+        return data;
+    }
 }
+

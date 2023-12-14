@@ -9,22 +9,27 @@ using System.Text.Json;
 using Newtonsoft.Json;
 await Database.init();
 
-var builder = WebApplication.CreateBuilder(/*
-    new WebApplicationOptions { WebRootPath = "build"}*/);
+var builder = WebApplication.CreateBuilder(
+    new WebApplicationOptions { WebRootPath = "build"});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => options.LoginPath = "/login");
 builder.Services.AddAuthorization();
-
+builder.Services.AddCors();
 var app = builder.Build();
+
+app.UseCors(builder => builder.AllowAnyOrigin());
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 
+
 app.MapGet("/getinfo", [Authorize] async (HttpContext context) =>
 {
-    await context.Response.WriteAsync("Hello, " + context.User.Identity?.Name);    
+    await context.Response.WriteAsync(context.User?.Identity?.Name + " ok");    
 });
 app.MapGet("/getroomslist", [Authorize] async (HttpContext context) =>
 {
@@ -109,3 +114,4 @@ app.MapGet("/logout", async (HttpContext context) =>
     return Results.Ok();
 });
 app.Run();
+

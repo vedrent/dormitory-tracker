@@ -48,3 +48,9 @@ public class Implement
     public string implement_type;
     public int internal_id;
 }
+class RoomExternalData
+{
+    public int x;
+    public int y;
+    public int room;
+}

@@ -1,24 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.ec475126.css",
-    "main.js": "/static/js/main.bc7dc176.js",
-    "static/js/787.2804db61.chunk.js": "/static/js/787.2804db61.chunk.js",
-    "static/media/ic_phobia.svg": "/static/media/ic_phobia.d1573458185543a68952329fcdd8bbc2.svg",
-    "static/media/ic_action.svg": "/static/media/ic_action.39d5c80d621255f4778687dc26a7b357.svg",
-    "static/media/ic_hobby.svg": "/static/media/ic_hobby.86eb5f61d321ba23cd8d48a1a0bf9737.svg",
-    "static/media/ic_information.svg": "/static/media/ic_information.d9bf2d05da0173b66bd17e5da53e799d.svg",
-    "static/media/ic_inventory.svg": "/static/media/ic_inventory.8e9bde57ae33419635ccb55fe62c61ec.svg",
-    "static/media/ic_profession.svg": "/static/media/ic_profession.bed87bfb21358564d3be15177d11ea26.svg",
-    "static/media/ic_gender.svg": "/static/media/ic_gender.d5f5a9d5a9db9a95224e132122f17172.svg",
-    "static/media/ic_health.svg": "/static/media/ic_health.789ba10944b98d886af1640561228f37.svg",
+    "main.css": "/static/css/main.a7cf8391.css",
+    "main.js": "/static/js/main.f9e49e8e.js",
+    "static/js/787.2703ebbb.chunk.js": "/static/js/787.2703ebbb.chunk.js",
     "index.html": "/index.html",
-    "static/media/ic_personality.svg": "/static/media/ic_personality.c0a26bb20b268c779fb0e19be6a18567.svg",
-    "main.ec475126.css.map": "/static/css/main.ec475126.css.map",
-    "main.bc7dc176.js.map": "/static/js/main.bc7dc176.js.map",
-    "787.2804db61.chunk.js.map": "/static/js/787.2804db61.chunk.js.map"
+    "static/media/profile.svg": "/static/media/profile.e780cddffc02592f6389b3ba9083f3f0.svg",
+    "main.a7cf8391.css.map": "/static/css/main.a7cf8391.css.map",
+    "main.f9e49e8e.js.map": "/static/js/main.f9e49e8e.js.map",
+    "787.2703ebbb.chunk.js.map": "/static/js/787.2703ebbb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ec475126.css",
-    "static/js/main.bc7dc176.js"
+    "static/css/main.a7cf8391.css",
+    "static/js/main.f9e49e8e.js"
   ]
 }

@@ -1,5 +1,9 @@
+создать volume:
+docker volume create app_volume
+
 запустить базу данных в docker: 
-sudo docker run -d --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres 
+sudo docker run -d --name postgresCont --mount source=app_volume,target=/db -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
+sudo docker run -d --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 
 Настроить базу данных:
 sudo docker exec -it postgresCont bash
@@ -9,7 +13,8 @@ quit
 exit
 
 развернуть: 
-sudo docker run --network=host danst79/intelligenthostel:latest
+sudo docker run -d --network=host --name=app --mount source=app_volume,target=/app danst79/intelligenthostel:latest
+sudo docker run --network=host --name=app danst79/intelligenthostel:latest
 
 ###
 postgres=# \c dormitory_db
@@ -25,3 +30,4 @@ dormitory_db=# \dt
  public | students         | table | postgres
  public | users            | table | postgres
 (6 rows)
+https://docs.docker.com/storage/volumes/

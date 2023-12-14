@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:443;http://localhost:443"
+      "applicationUrl": "https://localhost:443"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -30,7 +30,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTPS_PORTS": "443",
         "ASPNETCORE_HTTP_PORTS": "8080"
       },
       "publishAllPorts": true,

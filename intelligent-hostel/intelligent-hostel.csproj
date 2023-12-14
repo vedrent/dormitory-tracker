@@ -10,6 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Новая папка\**" />
+    <Content Remove="Новая папка\**" />
+    <EmbeddedResource Remove="Новая папка\**" />
+    <None Remove="Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="build\avatar.svg" />
+    <Content Include="build\favicon.ico" />
+    <Content Include="build\index.html" />
+    <Content Include="build\logo192.png" />
+    <Content Include="build\logo512.png" />
+    <Content Include="build\robots.txt" />
+    <Content Include="build\static\css\main.a7cf8391.css" />
+    <Content Include="build\static\css\main.a7cf8391.css.map" />
+    <Content Include="build\static\js\787.2703ebbb.chunk.js" />
+    <Content Include="build\static\js\787.2703ebbb.chunk.js.map" />
+    <Content Include="build\static\js\main.f9e49e8e.js" />
+    <Content Include="build\static\js\main.f9e49e8e.js.LICENSE.txt" />
+    <Content Include="build\static\js\main.f9e49e8e.js.map" />
+    <Content Include="build\static\media\profile.e780cddffc02592f6389b3ba9083f3f0.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="8.0.1" />
