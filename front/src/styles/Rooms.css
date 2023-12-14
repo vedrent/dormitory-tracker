@@ -1,0 +1,7 @@
+@import "theme.css";
+
+.Levels {
+    right: 0;
+    width: 100px;
+    position: absolute;
+}
