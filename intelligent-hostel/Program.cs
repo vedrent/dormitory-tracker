@@ -49,6 +49,20 @@ app.MapGet("/getroomslist", [Authorize] async (HttpContext context) =>
     await context.Response.WriteAsync(json);
 
 });
+app.MapGet("/getroom", [Authorize] async (HttpContext context) =>
+{
+    string? room_id = context.Request.Query["room_id"];
+    if (room_id == null)
+    {
+        context.Response.StatusCode = 404;
+        return;
+    }
+    context.Response.Headers.Append("Content-Type", "application/json");
+    var rooms = await Database.getRoomById(Int32.Parse(room_id));
+    string json = JsonConvert.SerializeObject(rooms.First());
+    await context.Response.WriteAsync(json);
+
+});
 app.MapGet("/getstudents_byroom", [Authorize] async (context) =>
 {
     string? room_id_raw = context.Request.Query["room_id"];

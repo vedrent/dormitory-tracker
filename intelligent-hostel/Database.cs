@@ -40,7 +40,7 @@ public static class Database
     }
     public static async Task<Room[]> getRoomsByLevel(int level)
     {
-        var connection = dataSource.CreateConnection();
+        await using var connection = dataSource.CreateConnection();
         await connection.OpenAsync();
         await using var command = new Npgsql.NpgsqlCommand("select * from rooms where floor = $1::int", connection)
         {
@@ -69,9 +69,39 @@ public static class Database
         return rooms.ToArray();
 
     }
+    public static async Task<Room[]> getRoomById(int room_id)
+    {
+        await using var connection = dataSource.CreateConnection();
+        await connection.OpenAsync();
+        await using var command = new Npgsql.NpgsqlCommand("select * from rooms where room_id = $1::int", connection)
+        {
+            Parameters =
+            {
+                new() {Value = room_id},
+            }
+        };
+        await using var reader = await command.ExecuteReaderAsync();
+        List<Room> rooms = [];
+
+        while (await reader.ReadAsync())
+        {
+            Room room = new Room();
+            room.room_id = (int)reader[0];
+            room.room_number = (string)reader[1];
+            room.floor = (int)reader[2];
+            room.room_type = (int)reader[3];
+            room.beds_number = (int)reader[4];
+            room.image_x = (int)reader[5];
+            room.image_y= (int)reader[6];
+
+            rooms.Add(room);
+        }
+        await connection.CloseAsync();
+        return rooms.ToArray();
+    }
     public static async Task<Student[]> getStudentsByRoom(int room_id)
     {
-        var connection = dataSource.CreateConnection();
+        await using var connection = dataSource.CreateConnection();
         await connection.OpenAsync();
         await using var command = new Npgsql.NpgsqlCommand("select * from students where room_id = $1::int", connection)
         {
@@ -108,7 +138,7 @@ public static class Database
     }
     public static async Task<Implement[]> getImplementsByRoom(int room_id)
     {
-        var connection = dataSource.CreateConnection();
+        await using var connection = dataSource.CreateConnection();
         await connection.OpenAsync();
         await using var command = new Npgsql.NpgsqlCommand("select * from implements where room_id = $1::int", connection)
         {
@@ -136,7 +166,7 @@ public static class Database
     }
     public static async Task<User?> getUserByLogin(string login)
     {
-        var connection = await dataSource.OpenConnectionAsync();
+        await using var connection = await dataSource.OpenConnectionAsync();
         await using var command = new Npgsql.NpgsqlCommand(
             @"select * from users where login = $1::text", connection)
         {
@@ -337,13 +367,14 @@ public static class Database
             values('1', 'Общежитие №1 РТУ МИРЭА', 'Проспект Вернадского, 86с1', '14', '39', '/static/images/floor.svg')
           ");
         await using var reader_d = await command_d.ExecuteReaderAsync();
+
         int currentRoom = 0;
         int currentStudent = 0;
         for (int i = 1; i <= 14; i++)
         {
             for (int r = 1; r < 32; r++)
             {
-                var connection = dataSource.CreateConnection();
+                await using var connection = dataSource.CreateConnection();
                 await connection.OpenAsync();
                 int beds_number = Random.Shared.Next(1, 5);
                 await using var commandI = new Npgsql.NpgsqlCommand(
@@ -369,7 +400,7 @@ public static class Database
                 
                 for (int st = 0; st < students_count; st++)
                 {
-                    var connection_s = dataSource.CreateConnection();
+                    await using var connection_s = dataSource.CreateConnection();
                     await connection_s.OpenAsync();
                     await using var insertStudentCommand = new Npgsql.NpgsqlCommand(
                         @"insert into students
@@ -419,7 +450,7 @@ public static class Database
                     for (int inv_step = 0; inv_step < inventoryCount_OfStudent; inv_step++)
                     {
                         string type = inventory_types[Random.Shared.Next(0, 6)];
-                        var connection_inv = dataSource.CreateConnection();
+                        await using var connection_inv = dataSource.CreateConnection();
                         await connection_inv.OpenAsync();
 
                         await using var insertInventoryCommand = new Npgsql.NpgsqlCommand(

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="intelligent_hostel.Database">
+    <Position X="7.75" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACABAKAAAAgBAQgAgBMAEAAAAAAQQIIAAAAAAACAAAA=</HashCode>
+      <FileName>Database.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="intelligent_hostel.Room">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAIEAAAAAAAAAAAADAAEAAAAAI=</HashCode>
+      <FileName>Entities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="intelligent_hostel.User">
+    <Position X="6" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAgAAAAAAEAAAAAAAAgAAAAAgAAEAA=</HashCode>
+      <FileName>Entities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="intelligent_hostel.Student">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAAgAAAAgAAAAAAAAMAAAgAAAEAAAQABAAAAAAIJI=</HashCode>
+      <FileName>Entities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="intelligent_hostel.Implement">
+    <Position X="4" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEAAAAAIAAAI=</HashCode>
+      <FileName>Entities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="intelligent_hostel.RoomExternalData">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Entities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
